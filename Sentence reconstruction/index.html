@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentence Enhancer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentence Enhancer</h1>
+        <form id="sentenceForm">
+            <input type="text" id="sentence" name="sentence" placeholder="Enter your sentence" required>
+            <button type="submit">Enhance</button>
+        </form>
+        <div class="result" id="result">
+            <h2>Enhanced Sentence:</h2>
+            <p id="enhanced"></p>
+            <h2>Kind-hearted Sentence:</h2>
+            <p id="kind_hearted"></p>
+            <h2>Grammatically Correct Sentence:</h2>
+            <p id="grammatically_correct"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('sentenceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const sentence = document.getElementById('sentence').value;
+            const response = await fetch('/enhance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ 'sentence': sentence })
+            });
+            const data = await response.json();
+            document.getElementById('enhanced').textContent = data.enhanced;
+            document.getElementById('kind_hearted').textContent = data.kind_hearted;
+            document.getElementById('grammatically_correct').textContent = data.grammatically_correct;
+        });
+    </script>
+</body>
+</html>
